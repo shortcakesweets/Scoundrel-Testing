@@ -6,6 +6,12 @@
     box-sizing: border-box;
 }
 
+html,
+body {
+    height: 100%;
+    overflow: hidden;
+}
+
 body {
     margin: 0;
     min-height: 100vh;
@@ -367,6 +373,7 @@ body {
 }
 
 .menu {
+    position: relative;
     min-height: 100vh;
     display: grid;
     grid-template-rows: 22vh auto 1fr;
@@ -374,6 +381,16 @@ body {
     justify-items: center;
     gap: 28px;
     padding: 48px 16px 36px;
+}
+
+.debug-version {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    font-size: 0.65rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #6f6f6f;
 }
 
 h1 {
@@ -469,9 +486,13 @@ h1 {
 }
 
 #tip-text {
+    display: block;
     text-transform: none;
     letter-spacing: 0.02em;
     color: #c6c6c6;
+    line-height: 1.4;
+    height: calc(4 * 1.4em);
+    overflow: hidden;
 }
 
 @media (max-width: 640px) {
