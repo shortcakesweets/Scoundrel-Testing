@@ -41,6 +41,7 @@ Any potions consumed after will fizzle and have no effect.
 ### 2-A of Spades & Clubs
 
 These are enemies. You may kill it by using your weapon or your bare fist.
+The rank of J, Q, K, A are 11, 12, 13, 14.
 
 1. Using a weapon
 Weapons can reduce damage when killing an enemy.
