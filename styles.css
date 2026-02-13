@@ -253,13 +253,6 @@ body {
     box-shadow: 0 0 0 2px #f2d675, 0 0 14px rgba(242, 214, 117, 0.45);
 }
 
-.room-card[disabled]:hover img,
-.room-card[disabled]:focus-visible img,
-.room-card[data-empty="true"]:hover img,
-.room-card[data-empty="true"]:focus-visible img {
-    transform: none;
-    filter: grayscale(0.7) brightness(0.8);
-}
 
 .weapon-area {
     width: min(92vw, 820px);
@@ -309,11 +302,6 @@ body {
     box-shadow: none;
 }
 
-.weapon-choice:not(.is-choice):hover img,
-.weapon-choice:not(.is-choice):focus-visible img {
-    transform: none;
-    filter: none;
-}
 
 .weapon-stack {
     position: relative;
@@ -593,15 +581,6 @@ h1 {
     .tips {
         font-size: 0.85rem;
         align-self: start;
-    }
-
-    .card-button:hover img,
-    .card-button:focus-visible img,
-    .weapon-choice:not(.is-choice):hover img,
-    .weapon-choice:not(.is-choice):focus-visible img {
-        transform: none;
-        filter: none;
-        box-shadow: none;
     }
 
     .card-button img {
