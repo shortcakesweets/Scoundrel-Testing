@@ -74,6 +74,10 @@ const handleOptionToggle = async (key) => {
 };
 
 if (app) {
+    app.addEventListener("touchmove", (event) => {
+        event.preventDefault();
+    }, { passive: false });
+
     app.addEventListener("contextmenu", (event) => {
         event.preventDefault();
     });
