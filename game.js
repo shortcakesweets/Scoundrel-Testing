@@ -297,9 +297,10 @@ const render = (state) => {
     const hpBar = root.querySelector(".hp-bar");
     const hintText = root.querySelector("#hint-text");
     const dialogueText = root.querySelector("#dialogue-text");
-    const fleeButton = root.querySelector("[data-action='flee']");
     const weaponButton = root.querySelector("[data-action='weapon']");
-    const fistButton = root.querySelector("[data-action='fist']");
+    const actionButton = root.querySelector("#action-button");
+    const actionImg = root.querySelector("#action-card");
+    const actionLabel = root.querySelector("#action-label");
 
     if (deckCount) {
         deckCount.textContent = String(game.deck.length);
@@ -383,29 +384,37 @@ const render = (state) => {
         });
     }
 
-    if (fleeButton) {
-        const fleeAvailable = possibleActions.includes(-1) && !game.isTerminal();
-        fleeButton.disabled = !fleeAvailable;
-        fleeButton.classList.toggle("is-disabled", !fleeAvailable);
-    }
-
     const selectedSlot = state.selectedSlot;
     const hasEnemySelection = selectedSlot !== null && Card.isEnemy(game.room[selectedSlot]);
     const weaponAvailable = hasEnemySelection && possibleActions.includes(2 * selectedSlot + 1);
     const fistAvailable = hasEnemySelection && possibleActions.includes(2 * selectedSlot);
+    const fleeAvailable = possibleActions.includes(-1) && !game.isTerminal();
+
+    if (actionButton && actionImg && actionLabel) {
+        if (hasEnemySelection) {
+            actionButton.dataset.action = "fist";
+            actionImg.src = "cards/Fist.png";
+            actionImg.alt = "Fist";
+            actionLabel.textContent = "Fist";
+            actionButton.classList.add("is-choice");
+            actionButton.disabled = !fistAvailable;
+            actionButton.classList.toggle("is-disabled", !fistAvailable);
+        } else {
+            actionButton.dataset.action = "flee";
+            actionImg.src = "cards/Flee.png";
+            actionImg.alt = "Flee";
+            actionLabel.textContent = "Flee";
+            actionButton.classList.remove("is-choice");
+            actionButton.disabled = !fleeAvailable;
+            actionButton.classList.toggle("is-disabled", !fleeAvailable);
+        }
+    }
 
     if (weaponButton) {
         const disabled = hasEnemySelection && !weaponAvailable;
         weaponButton.disabled = disabled;
         weaponButton.classList.toggle("is-choice", hasEnemySelection);
         weaponButton.classList.toggle("is-disabled", disabled);
-    }
-
-    if (fistButton) {
-        const disabled = hasEnemySelection && !fistAvailable;
-        fistButton.disabled = disabled;
-        fistButton.classList.toggle("is-choice", hasEnemySelection);
-        fistButton.classList.toggle("is-disabled", disabled);
     }
 
     if (hintText) {

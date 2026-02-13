@@ -41,7 +41,7 @@ body {
     --card-w: 71px;
     --card-h: 96px;
     --stack-offset: 23px;
-    --stack-max: 5;
+    --stack-max: 8;
 }
 
 .game .card-button {
@@ -154,35 +154,6 @@ body {
     color: #f2f2f2;
 }
 
-.flee-button {
-    background: transparent;
-    border: none;
-    padding: 0;
-    display: grid;
-    gap: 6px;
-    justify-items: center;
-    color: #f2f2f2;
-    font-size: 0.7rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    cursor: pointer;
-}
-
-.flee-button img {
-    width: var(--card-w, 71px);
-    height: var(--card-h, 96px);
-}
-
-.flee-button.is-disabled {
-    color: #6f6f6f;
-    cursor: not-allowed;
-}
-
-.flee-button.is-disabled img {
-    filter: grayscale(0.7) brightness(0.8);
-    opacity: 0.6;
-}
-
 .hold-actions {
     display: flex;
     gap: 10px;
@@ -269,6 +240,29 @@ body {
     flex: 0 0 auto;
     color: #f2f2f2;
     gap: 10px;
+}
+
+.action-button {
+    width: calc(var(--card-w, 71px) * 1.05);
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    flex: 0 0 auto;
+    color: #f2f2f2;
+    gap: 10px;
+}
+
+.action-button.is-disabled {
+    color: #6f6f6f;
+    cursor: not-allowed;
+}
+
+.action-button.is-disabled img {
+    filter: grayscale(0.7) brightness(0.8);
+    opacity: 0.6;
+}
+
+.action-button.is-choice img {
+    box-shadow: 0 0 0 2px #f2d675, 0 0 14px rgba(242, 214, 117, 0.45);
 }
 
 .weapon-label {
@@ -496,7 +490,7 @@ h1 {
         --card-w: 60px;
         --card-h: 81px;
         --stack-offset: 19px;
-        --stack-max: 3;
+        --stack-max: 6;
     }
 
     .status-bar {
@@ -528,11 +522,6 @@ h1 {
         gap: 10px;
     }
 
-    .flee-button img {
-        width: var(--card-w, 60px);
-        height: var(--card-h, 81px);
-    }
-
     .hold-button {
         min-width: 100px;
         padding: 5px 10px;
@@ -543,7 +532,7 @@ h1 {
         font-size: 0.72rem;
     }
 
-    .flee-button {
+    .action-button {
         font-size: 0.65rem;
     }
 
