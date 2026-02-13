@@ -343,7 +343,7 @@ const render = (state) => {
 
         img.src = cardToImage(card);
         img.alt = cardToAlt(card);
-        button.disabled = card === 0 || game.isTerminal();
+        button.disabled = game.isTerminal();
         button.dataset.empty = card === 0 ? "true" : "false";
         button.classList.toggle("is-selected", slot === state.selectedSlot);
 
