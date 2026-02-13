@@ -74,11 +74,46 @@ const handleOptionToggle = async (key) => {
 };
 
 if (app) {
+    let suppressClick = false;
+
     app.addEventListener("contextmenu", (event) => {
         event.preventDefault();
     });
 
+    app.addEventListener("pointerdown", (event) => {
+        if (event.pointerType === "mouse" && event.button !== 0) {
+            return;
+        }
+
+        if (event.target.closest("[data-hold-action]")) {
+            return;
+        }
+
+        const button = event.target.closest("button");
+        if (!button || !app.contains(button)) {
+            return;
+        }
+
+        const action = button.dataset.action;
+        if (action) {
+            suppressClick = true;
+            handleAction(action);
+            return;
+        }
+
+        const optionKey = button.dataset.option;
+        if (optionKey) {
+            suppressClick = true;
+            handleOptionToggle(optionKey);
+        }
+    });
+
     app.addEventListener("click", (event) => {
+        if (suppressClick) {
+            suppressClick = false;
+            return;
+        }
+
         const button = event.target.closest("button");
         if (!button || !app.contains(button)) {
             return;

@@ -466,12 +466,13 @@ export const initGame = (root = document, config = {}) => {
     };
     let activeHoldButton = null;
     let holdTimer = null;
+    let suppressClick = false;
 
     const dispatchGameEvent = (name, detail = {}) => {
         root.dispatchEvent(new CustomEvent(name, { bubbles: true, detail }));
     };
 
-    const handleClick = (event) => {
+    const handlePress = (event) => {
         const actionButton = event.target.closest("[data-action]");
         if (actionButton && root.contains(actionButton)) {
             const action = actionButton.dataset.action;
@@ -482,18 +483,18 @@ export const initGame = (root = document, config = {}) => {
                     state.selectedSlot = null;
                     render(state);
                 }
-                return;
+                return true;
             }
             if (action === "weapon" || action === "fist") {
                 if (state.selectedSlot === null) {
-                    return;
+                    return true;
                 }
                 const selectedSlot = state.selectedSlot;
                 const selectedCard = game.room[selectedSlot];
                 if (!selectedCard || !Card.isEnemy(selectedCard)) {
                     state.selectedSlot = null;
                     render(state);
-                    return;
+                    return true;
                 }
                 const actionId = action === "weapon" ? 2 * selectedSlot + 1 : 2 * selectedSlot;
                 if (game.getPossibleActions().includes(actionId)) {
@@ -502,36 +503,38 @@ export const initGame = (root = document, config = {}) => {
                     state.selectedSlot = null;
                     render(state);
                 }
-                return;
+                return true;
             }
+
+            return true;
         }
 
         const debugButton = event.target.closest("[data-debug='stack']");
         if (debugButton && root.contains(debugButton)) {
             game.weaponStack.push(randomEnemyCard());
             render(state);
-            return;
+            return true;
         }
 
         const button = event.target.closest("[data-room-slot]");
         if (!button || !root.contains(button)) {
-            return;
+            return false;
         }
 
         const slot = Number(button.dataset.roomSlot);
         if (Number.isNaN(slot)) {
-            return;
+            return true;
         }
 
         const card = game.room[slot];
         if (!card || game.isTerminal()) {
-            return;
+            return true;
         }
 
         if (Card.isEnemy(card)) {
             state.selectedSlot = slot;
             render(state);
-            return;
+            return true;
         }
 
         const actionId = 2 * slot;
@@ -541,6 +544,31 @@ export const initGame = (root = document, config = {}) => {
         }
         state.selectedSlot = null;
         render(state);
+        return true;
+    };
+
+    const handlePressPointerDown = (event) => {
+        if (event.pointerType === "mouse" && event.button !== 0) {
+            return;
+        }
+
+        if (event.target.closest("[data-hold-action]")) {
+            return;
+        }
+
+        const handled = handlePress(event);
+        if (handled) {
+            suppressClick = true;
+        }
+    };
+
+    const handlePressClick = (event) => {
+        if (suppressClick) {
+            suppressClick = false;
+            return;
+        }
+
+        handlePress(event);
     };
 
     const startHold = (button) => {
@@ -599,14 +627,16 @@ export const initGame = (root = document, config = {}) => {
         cancelHold();
     };
 
-    root.addEventListener("click", handleClick);
+    root.addEventListener("pointerdown", handlePressPointerDown);
+    root.addEventListener("click", handlePressClick);
     root.addEventListener("pointerdown", handleHoldPointerDown);
     root.addEventListener("pointerup", handleHoldPointerUp);
     root.addEventListener("pointercancel", handleHoldPointerUp);
     render(state);
 
     return () => {
-        root.removeEventListener("click", handleClick);
+        root.removeEventListener("pointerdown", handlePressPointerDown);
+        root.removeEventListener("click", handlePressClick);
         root.removeEventListener("pointerdown", handleHoldPointerDown);
         root.removeEventListener("pointerup", handleHoldPointerUp);
         root.removeEventListener("pointercancel", handleHoldPointerUp);
