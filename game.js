@@ -261,30 +261,30 @@ const ensureWeaponFirstRoom = (game) => {
 
 const hintForCard = (card) => {
     if (!card) {
-        return "";
+        return { text: "", type: "" };
     }
 
     if (Card.isEnemy(card)) {
-        return "Enemy";
+        return { text: "Enemy", type: "enemy" };
     }
 
     if (Card.isWeapon(card)) {
-        return "Weapon";
+        return { text: "Weapon", type: "weapon" };
     }
 
     if (Card.isRepairKit(card)) {
-        return "Repair kit";
+        return { text: "Repair kit", type: "repair" };
     }
 
     if (Card.isHealthPotion(card)) {
-        return "Health Potion";
+        return { text: "Health Potion", type: "health" };
     }
 
     if (Card.isPoisonPotion(card)) {
-        return "Poison Potion";
+        return { text: "Poison Potion", type: "poison" };
     }
 
-    return "";
+    return { text: "", type: "" };
 };
 
 const render = (state) => {
@@ -349,7 +349,13 @@ const render = (state) => {
 
         const hint = button.querySelector("[data-room-hint]");
         if (hint) {
-            hint.textContent = hintForCard(card);
+            const hintData = hintForCard(card);
+            hint.textContent = hintData.text;
+            if (hintData.type) {
+                hint.dataset.hintType = hintData.type;
+            } else {
+                delete hint.dataset.hintType;
+            }
         }
     });
 

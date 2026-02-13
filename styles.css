@@ -356,6 +356,22 @@ body {
     text-align: center;
 }
 
+.room-hint[data-hint-type="weapon"] {
+    color: #7fc8ff;
+}
+
+.room-hint[data-hint-type="repair"] {
+    color: #f2d675;
+}
+
+.room-hint[data-hint-type="health"] {
+    color: #ff7a7a;
+}
+
+.room-hint[data-hint-type="poison"] {
+    color: #b58cff;
+}
+
 .hints-hidden .room-hint {
     visibility: hidden;
 }
