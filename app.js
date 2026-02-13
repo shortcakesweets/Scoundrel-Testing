@@ -77,11 +77,7 @@ if (app) {
     app.addEventListener("touchmove", (event) => {
         event.preventDefault();
     }, { passive: false });
-
-    app.addEventListener("touchstart", (event) => {
-        event.preventDefault();
-    }, { passive: false });
-
+    
     app.addEventListener("contextmenu", (event) => {
         event.preventDefault();
     });
