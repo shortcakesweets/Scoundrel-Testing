@@ -33,7 +33,9 @@ export class Scoundrel {
     }
 
     drawRoom(){
-        for(let i = 0; i < 4; i++){
+        if(this.deck.length === 0 || this.#countRoomOccupy() === 4) return;
+
+        for(let i = 0; i < 4 && this.deck.length > 0; i++){
             if(this.room[i] === 0){
                 this.room[i] = this.deck.shift();
             }
