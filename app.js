@@ -34,7 +34,7 @@ const showOptions = async () => {
 
     app.innerHTML = await loadFragment("options.html");
     const { initOptions } = await import("./options.js");
-    initOptions(app);
+    await initOptions(app);
     setView(null);
 };
 
@@ -90,7 +90,7 @@ if (app) {
         event.preventDefault();
     });
 
-    app.addEventListener("click", (event) => {
+    app.addEventListener("click", async (event) => {
         const button = event.target.closest("button");
         if (!button || !app.contains(button)) {
             return;
@@ -98,6 +98,11 @@ if (app) {
 
         const action = button.dataset.action;
         if (action) {
+            if (action === "locale") {
+                const { toggleLocale } = await import("./options.js");
+                toggleLocale(app);
+                return;
+            }
             handleAction(action);
             return;
         }

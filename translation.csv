@@ -1,0 +1,8 @@
+key,en,ko,ja
+options.title,Options,옵션,オプション
+options.hintText,Hint<br />Text,힌트<br />텍스트,ヒント<br />テキスト
+options.firstRoomWeapon,Weapon<br />First<br />Room,첫 방<br />무기,最初の部屋<br />武器
+options.mainMenu,Main<br />Menu,메인<br />메뉴,メイン<br />メニュー
+options.on,On,켬,オン
+options.off,Off,끔,オフ
+options.language,Language,언어,言語

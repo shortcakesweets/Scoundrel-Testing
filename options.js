@@ -1,9 +1,13 @@
+import { applyTranslations, ensureTranslations, getLocale, setLocale, t } from "./i18n.js";
+
 const OPTIONS_KEY = "scoundrel.options";
 
 const DEFAULT_OPTIONS = {
     hintText: true,
     firstRoomWeapon: false,
 };
+
+const LOCALES = ["en", "ko", "ja"];
 
 const loadOptions = () => {
     try {
@@ -25,7 +29,7 @@ const saveOptions = (options) => {
 
 const BACK_SRC = "cards/Back.png";
 
-const renderOptions = (root, options) => {
+const renderOptions = (root, options, translate) => {
     const buttons = root.querySelectorAll("[data-option]");
     buttons.forEach((button) => {
         const key = button.dataset.option;
@@ -41,14 +45,21 @@ const renderOptions = (root, options) => {
 
         const state = button.querySelector("[data-option-state]");
         if (state) {
-            state.textContent = enabled ? "On" : "Off";
+            state.textContent = enabled ? translate("options.on") : translate("options.off");
         }
     });
+
+    const localeLabel = root.querySelector("[data-locale-state]");
+    if (localeLabel) {
+        localeLabel.textContent = getLocale().toUpperCase();
+    }
 };
 
-export const initOptions = (root = document) => {
+export const initOptions = async (root = document) => {
+    await ensureTranslations();
+    applyTranslations(root);
     const options = loadOptions();
-    renderOptions(root, options);
+    renderOptions(root, options, t);
 };
 
 export const toggleOption = (root = document, key) => {
@@ -59,7 +70,16 @@ export const toggleOption = (root = document, key) => {
     const options = loadOptions();
     options[key] = !options[key];
     saveOptions(options);
-    renderOptions(root, options);
+    renderOptions(root, options, t);
 };
 
 export const getOptions = () => loadOptions();
+
+export const toggleLocale = (root = document) => {
+    const current = getLocale();
+    const index = LOCALES.indexOf(current);
+    const next = LOCALES[(index + 1) % LOCALES.length];
+    setLocale(next);
+    applyTranslations(root);
+    renderOptions(root, loadOptions(), t);
+};
