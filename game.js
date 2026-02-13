@@ -472,9 +472,18 @@ export const initGame = (root = document, config = {}) => {
     };
 
     const handleClick = (event) => {
+        const selectedSlot = state.selectedSlot;
+        const selectionActive = selectedSlot !== null && Card.isEnemy(game.room[selectedSlot]);
         const actionButton = event.target.closest("[data-action]");
+        const action = actionButton?.dataset.action;
+
+        if (selectionActive && action !== "weapon" && action !== "fist") {
+            state.selectedSlot = null;
+            render(state);
+            return;
+        }
+
         if (actionButton && root.contains(actionButton)) {
-            const action = actionButton.dataset.action;
             if (action === "flee") {
                 if (game.getPossibleActions().includes(-1)) {
                     state.lastAction = buildActionInfo(game, -1, 0);
@@ -575,6 +584,10 @@ export const initGame = (root = document, config = {}) => {
     };
 
     const handleHoldPointerDown = (event) => {
+        if (state.selectedSlot !== null && Card.isEnemy(game.room[state.selectedSlot])) {
+            return;
+        }
+
         const button = event.target.closest("[data-hold-action]");
         if (!button || !root.contains(button)) {
             return;
@@ -599,10 +612,19 @@ export const initGame = (root = document, config = {}) => {
         cancelHold();
     };
 
+    const handleCancelContextMenu = (event) => {
+        if (state.selectedSlot !== null && Card.isEnemy(game.room[state.selectedSlot])) {
+            event.preventDefault();
+            state.selectedSlot = null;
+            render(state);
+        }
+    };
+
     root.addEventListener("click", handleClick);
     root.addEventListener("pointerdown", handleHoldPointerDown);
     root.addEventListener("pointerup", handleHoldPointerUp);
     root.addEventListener("pointercancel", handleHoldPointerUp);
+    root.addEventListener("contextmenu", handleCancelContextMenu);
     render(state);
 
     return () => {
@@ -610,5 +632,6 @@ export const initGame = (root = document, config = {}) => {
         root.removeEventListener("pointerdown", handleHoldPointerDown);
         root.removeEventListener("pointerup", handleHoldPointerUp);
         root.removeEventListener("pointercancel", handleHoldPointerUp);
+        root.removeEventListener("contextmenu", handleCancelContextMenu);
     };
 };
