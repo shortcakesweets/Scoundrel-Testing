@@ -500,19 +500,16 @@ h1 {
 }
 
 .howto {
-    min-height: 100vh;
-    display: grid;
-    grid-template-rows: minmax(0, 1fr) auto;
-    align-items: start;
-    justify-items: center;
-    gap: 18px;
+    position: fixed;
+    inset: 0;
     padding: 28px 16px 24px;
 }
 
 .howto-body {
     width: min(92vw, 820px);
+    height: 100%;
     overflow-y: auto;
-    padding: 6px 6px 0;
+    padding: 6px 6px 18px;
     color: #c8c8c8;
     font-size: 0.9rem;
     line-height: 1.55;
@@ -581,11 +578,8 @@ h1 {
     color: #b58cff;
 }
 
-.howto-actions {
-    width: min(92vw, 820px);
-    display: grid;
-    justify-items: center;
-    padding-bottom: 8px;
+.howto-menu-button {
+    margin: 16px auto 0;
 }
 
 @media (max-width: 640px) {
@@ -682,7 +676,6 @@ h1 {
     }
 
     .howto {
-        gap: 14px;
         padding: 22px 14px 20px;
     }
 
