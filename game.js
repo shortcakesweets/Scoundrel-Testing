@@ -439,8 +439,8 @@ const render = (state) => {
     const actionText = selectionText || actionToText(state.lastAction);
     const resultText = game.isTerminal()
         ? (game.isWin()
-            ? `You escaped the dungeon. Score: ${game.score()}.`
-            : `You fell. Score: ${game.score()}.`)
+            ? `You escaped the dungeon.\nScore: ${game.score()}.`
+            : `You fell.\nScore: ${game.score()}.`)
         : "";
     const introText = buildIntroText(state, game);
     let roomText = "";
